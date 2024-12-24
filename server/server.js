@@ -2,6 +2,7 @@ import "dotenv/config";
 import "express-async-errors";
 import express from "express";
 import { StatusCodes } from "http-status-codes";
+import connectDB from "./db/connect.js";
 
 const app = express();
 
@@ -14,8 +15,14 @@ app.get("/", (req, res) => {
 });
 
 const port = process.env.PORT || 3000;
-const start = () => {
-  app.listen(port, () => console.log(`server is running at port: ${port}`));
+
+const start = async () => {
+  try {
+    connectDB();
+    app.listen(port, () => console.log(`server is running at port: ${port}`));
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 start();

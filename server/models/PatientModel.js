@@ -20,10 +20,6 @@ const patientSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  walletBalance: {
-    type: Number,
-    default: 0,
-  },
   appointmentHistory: [
     {
       type: mongoose.Schema.Types.ObjectId,

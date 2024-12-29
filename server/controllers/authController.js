@@ -4,7 +4,9 @@ import { UnauthenticatedError } from "../errors/index.js";
 
 const register = async (req, res) => {
   const patient = await PatientModel.create({ ...req.body });
+
   const token = patient.createJWT();
+
   res.status(StatusCodes.CREATED).json({
     msg: "registration successful",
     user: { name: patient.name },

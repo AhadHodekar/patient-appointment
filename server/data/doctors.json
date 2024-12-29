@@ -1,0 +1,140 @@
+[
+  {
+    "name": "Dr. John Doe",
+    "specialization": "Cardiologist",
+    "availability": [
+      {
+        "day": "Monday",
+        "timeSlot": {
+          "startTime": "09:00 AM",
+          "endTime": "12:00 PM"
+        }
+      },
+      {
+        "day": "Wednesday",
+        "timeSlot": {
+          "startTime": "01:00 PM",
+          "endTime": "04:00 PM"
+        }
+      },
+      {
+        "day": "Friday",
+        "timeSlot": {
+          "startTime": "10:00 AM",
+          "endTime": "02:00 PM"
+        }
+      }
+    ],
+    "fee": 200,
+    "createdAt": "2024-12-25T00:00:00.000Z"
+  },
+  {
+    "name": "Dr. Jane Smith",
+    "specialization": "Dermatologist",
+    "availability": [
+      {
+        "day": "Tuesday",
+        "timeSlot": {
+          "startTime": "08:00 AM",
+          "endTime": "11:00 AM"
+        }
+      },
+      {
+        "day": "Thursday",
+        "timeSlot": {
+          "startTime": "02:00 PM",
+          "endTime": "05:00 PM"
+        }
+      }
+    ],
+    "fee": 150,
+    "createdAt": "2024-12-25T00:00:00.000Z"
+  },
+  {
+    "name": "Dr. Sarah Lee",
+    "specialization": "Pediatrician",
+    "availability": [
+      {
+        "day": "Monday",
+        "timeSlot": {
+          "startTime": "10:00 AM",
+          "endTime": "01:00 PM"
+        }
+      },
+      {
+        "day": "Wednesday",
+        "timeSlot": {
+          "startTime": "03:00 PM",
+          "endTime": "06:00 PM"
+        }
+      },
+      {
+        "day": "Friday",
+        "timeSlot": {
+          "startTime": "09:00 AM",
+          "endTime": "12:00 PM"
+        }
+      }
+    ],
+    "fee": 120,
+    "createdAt": "2024-12-25T00:00:00.000Z"
+  },
+  {
+    "name": "Dr. Michael Johnson",
+    "specialization": "Orthopedic Surgeon",
+    "availability": [
+      {
+        "day": "Tuesday",
+        "timeSlot": {
+          "startTime": "11:00 AM",
+          "endTime": "02:00 PM"
+        }
+      },
+      {
+        "day": "Thursday",
+        "timeSlot": {
+          "startTime": "08:00 AM",
+          "endTime": "12:00 PM"
+        }
+      },
+      {
+        "day": "Saturday",
+        "timeSlot": {
+          "startTime": "01:00 PM",
+          "endTime": "04:00 PM"
+        }
+      }
+    ],
+    "fee": 250,
+    "createdAt": "2024-12-25T00:00:00.000Z"
+  },
+  {
+    "name": "Dr. Emily White",
+    "specialization": "Gynecologist",
+    "availability": [
+      {
+        "day": "Monday",
+        "timeSlot": {
+          "startTime": "12:00 PM",
+          "endTime": "03:00 PM"
+        }
+      },
+      {
+        "day": "Thursday",
+        "timeSlot": {
+          "startTime": "09:00 AM",
+          "endTime": "12:00 PM"
+        }
+      },
+      {
+        "day": "Saturday",
+        "timeSlot": {
+          "startTime": "04:00 PM",
+          "endTime": "07:00 PM"
+        }
+      }
+    ],
+    "fee": 180,
+    "createdAt": "2024-12-25T00:00:00.000Z"
+  }
+]

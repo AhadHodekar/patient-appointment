@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import WalletModel from "./WalletModel.js";
 
 const patientSchema = new mongoose.Schema({
   name: {
@@ -44,8 +45,24 @@ const patientSchema = new mongoose.Schema({
   },
 });
 
+patientSchema.methods.createWallet = async function () {
+  const existingWallet = await WalletModel.findOne({ patientId: this._id });
+  if (!existingWallet) {
+    const wallet = new WalletModel({
+      patientId: this._id,
+      balance: 600,
+    });
+
+    await wallet.save();
+    console.log(`Wallet is created for doctor: ${this.name}`);
+  }
+};
+
 patientSchema.pre("save", async function (next) {
-  this.password = bcrypt.hashSync(this.password, 8);
+  if (this.isNew) {
+    this.password = bcrypt.hashSync(this.password, 8);
+    await this.createWallet();
+  }
   next();
 });
 

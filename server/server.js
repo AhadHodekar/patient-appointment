@@ -1,5 +1,5 @@
-import "dotenv/config";
 import "express-async-errors";
+import "dotenv/config";
 import express from "express";
 import { StatusCodes } from "http-status-codes";
 import connectDB from "./db/connect.js";

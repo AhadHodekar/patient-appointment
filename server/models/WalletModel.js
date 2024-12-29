@@ -5,7 +5,12 @@ const walletSchema = new mongoose.Schema({
   patientId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Patient",
-    required: true,
+    required: false,
+  },
+  doctorId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Doctor",
+    required: false,
   },
   balance: {
     type: Number,
@@ -20,6 +25,11 @@ walletSchema.methods.deductAmount = function (amount) {
   } else {
     throw new BadRequestError("Insufficient balance");
   }
+};
+
+walletSchema.methods.creditAmount = function (amount) {
+  this.balance += amount;
+  return this.save();
 };
 
 const WalletModel = mongoose.model("Wallet", walletSchema);

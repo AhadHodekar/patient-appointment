@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import WalletModel from "./WalletModel.js";
 
 const doctorSchema = new mongoose.Schema({
   name: {
@@ -44,6 +45,26 @@ const doctorSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+});
+
+doctorSchema.methods.createWallet = async function () {
+  const existingWallet = await WalletModel.findOne({ doctorId: this._id });
+  if (!existingWallet) {
+    const wallet = new WalletModel({
+      doctorId: this._id,
+      balance: 0,
+    });
+
+    await wallet.save();
+    console.log(`Wallet is created for doctor: ${this.name}`);
+  }
+};
+
+doctorSchema.pre("save", async function (next) {
+  if (this.isNew) {
+    await this.createWallet();
+  }
+  next();
 });
 
 const DoctorModel = mongoose.model("Doctor", doctorSchema);

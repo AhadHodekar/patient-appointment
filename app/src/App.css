@@ -6,11 +6,33 @@
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html,
-body {
+body,
+.app {
   height: 100vh;
   width: 100%;
   background-color: var(--white);
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: bolder;
+}
+
+h2 {
+  font-weight: bolder;
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1rem;
+  font-weight: bolder;
+}
+
+p {
+  font-size: 12px;
 }

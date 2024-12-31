@@ -3,8 +3,18 @@ import AppointmentModel from "../models/AppointmentModel.js";
 import PatientModel from "../models/PatientModel.js";
 import WalletModel from "../models/WalletModel.js";
 import mongoose from "mongoose";
+import NotFoundError from "../errors/notFoundError.js";
 
-// Endpoint to get Patient's Financial Report
+const getPatient = async (req, res) => {
+  const patient = await PatientModel.findById({ _id: req.params.id })
+    .populate("wallet")
+    .exec();
+  if (!patient) {
+    throw new NotFoundError("Patient not found");
+  }
+  res.status(StatusCodes.OK).json(patient);
+};
+
 const getPatientFinancialReport = async (req, res) => {
   const { patientId } = req.params;
 
@@ -53,4 +63,4 @@ const getPatientFinancialReport = async (req, res) => {
   });
 };
 
-export { getPatientFinancialReport };
+export { getPatient, getPatientFinancialReport };

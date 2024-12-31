@@ -21,6 +21,10 @@ const patientSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  wallet: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Wallet",
+  },
   appointmentHistory: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -32,6 +36,10 @@ const patientSchema = new mongoose.Schema({
       doctorId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Doctor", // References the Doctor model
+      },
+      discountPercent: {
+        type: Number,
+        default: 0,
       },
       discountAmount: {
         type: Number,
@@ -50,10 +58,10 @@ patientSchema.methods.createWallet = async function () {
   if (!existingWallet) {
     const wallet = new WalletModel({
       patientId: this._id,
-      balance: 600,
+      balance: 2500,
     });
-
     await wallet.save();
+    this.wallet = wallet._id;
     console.log(`Wallet is created for doctor: ${this.name}`);
   }
 };
@@ -65,10 +73,6 @@ patientSchema.pre("save", async function (next) {
   }
   next();
 });
-
-patientSchema.methods.getId = function () {
-  return (this._id = id);
-};
 
 patientSchema.methods.createJWT = function () {
   return jwt.sign(

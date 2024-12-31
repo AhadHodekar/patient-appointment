@@ -1,12 +1,14 @@
 import "express-async-errors";
 import "dotenv/config";
 import express from "express";
+import cors from "cors";
 import { StatusCodes } from "http-status-codes";
 import connectDB from "./db/connect.js";
 
 const app = express();
 
 //middlewares
+app.use(cors());
 app.use(express.json());
 
 import errorHandlerMiddleware from "./middlewares/errorHandler.js";

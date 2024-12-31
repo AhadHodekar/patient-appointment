@@ -1,6 +1,6 @@
 [
   {
-    "name": "Dr. John Doe",
+    "name": "Dr. Arjun Kumar",
     "specialization": "Cardiologist",
     "availability": [
       {
@@ -25,11 +25,12 @@
         }
       }
     ],
-    "fee": 200,
-    "createdAt": "2024-12-25T00:00:00.000Z"
+    "fee": 800,
+    "createdAt": "2024-12-25T00:00:00.000Z",
+    "description": "Dr. Arjun Kumar is a seasoned Cardiologist with expertise in heart disease management, including preventive care, coronary artery disease, arrhythmias, and hypertension. Known for his compassionate approach and dedication, he is committed to offering personalized cardiovascular care to every patient, ensuring long-term heart health. He practices both in metropolitan and rural areas, bringing advanced cardiac care to underserved communities."
   },
   {
-    "name": "Dr. Jane Smith",
+    "name": "Dr. Priya Deshmukh",
     "specialization": "Dermatologist",
     "availability": [
       {
@@ -47,11 +48,12 @@
         }
       }
     ],
-    "fee": 150,
-    "createdAt": "2024-12-25T00:00:00.000Z"
+    "fee": 600,
+    "createdAt": "2024-12-25T00:00:00.000Z",
+    "description": "Dr. Priya Deshmukh is a leading Dermatologist with a special focus on treating complex skin conditions such as eczema, acne, and psoriasis, as well as cosmetic dermatology. She uses state-of-the-art treatments and believes in empowering her patients with the knowledge to maintain healthy skin. Dr. Deshmukh is particularly noted for her expertise in Ayurvedic skincare therapies and integrates traditional wisdom with modern dermatological treatments."
   },
   {
-    "name": "Dr. Sarah Lee",
+    "name": "Dr. Ananya Rao",
     "specialization": "Pediatrician",
     "availability": [
       {
@@ -76,11 +78,12 @@
         }
       }
     ],
-    "fee": 120,
-    "createdAt": "2024-12-25T00:00:00.000Z"
+    "fee": 700,
+    "createdAt": "2024-12-25T00:00:00.000Z",
+    "description": "Dr. Ananya Rao is a compassionate Pediatrician specializing in the care of infants, children, and adolescents. With years of experience, she provides top-tier preventive care, vaccinations, and treatment for childhood diseases. Dr. Rao's focus is not just on physical health but also emotional well-being, ensuring children feel comfortable and supported during their visits. She is passionate about bridging the gap in healthcare access, especially in rural parts of India."
   },
   {
-    "name": "Dr. Michael Johnson",
+    "name": "Dr. Rajesh Gupta",
     "specialization": "Orthopedic Surgeon",
     "availability": [
       {
@@ -105,11 +108,12 @@
         }
       }
     ],
-    "fee": 250,
-    "createdAt": "2024-12-25T00:00:00.000Z"
+    "fee": 1200,
+    "createdAt": "2024-12-25T00:00:00.000Z",
+    "description": "Dr. Rajesh Gupta is a renowned Orthopedic Surgeon, specializing in sports injuries, joint replacements, and spinal disorders. He offers both surgical and non-surgical treatment options to restore mobility and alleviate pain caused by musculoskeletal issues. Dr. Gupta is also deeply committed to advancing orthopedic care in rural and underserved regions, providing free consultation drives and outreach programs for people with limited access to healthcare."
   },
   {
-    "name": "Dr. Emily White",
+    "name": "Dr. Neha Sharma",
     "specialization": "Gynecologist",
     "availability": [
       {
@@ -134,7 +138,61 @@
         }
       }
     ],
-    "fee": 180,
-    "createdAt": "2024-12-25T00:00:00.000Z"
+    "fee": 750,
+    "createdAt": "2024-12-25T00:00:00.000Z",
+    "description": "Dr. Neha Sharma is an empathetic Gynecologist specializing in women’s health, with a particular focus on reproductive health, menopause, and preventive screenings. Known for her sensitive care approach, she works closely with patients to develop personalized health plans. Dr. Sharma integrates holistic Ayurvedic practices with Western medicine, focusing on wellness at every stage of life. She actively promotes women's health awareness through educational initiatives in both urban and rural settings."
+  },
+  {
+    "name": "Dr. Fatima Khan",
+    "specialization": "Endocrinologist",
+    "availability": [
+      {
+        "day": "Monday",
+        "timeSlot": {
+          "startTime": "10:00 AM",
+          "endTime": "01:00 PM"
+        }
+      },
+      {
+        "day": "Wednesday",
+        "timeSlot": {
+          "startTime": "02:00 PM",
+          "endTime": "05:00 PM"
+        }
+      },
+      {
+        "day": "Friday",
+        "timeSlot": {
+          "startTime": "09:00 AM",
+          "endTime": "12:00 PM"
+        }
+      }
+    ],
+    "fee": 900,
+    "createdAt": "2024-12-25T00:00:00.000Z",
+    "description": "Dr. Fatima Khan is a highly respected Endocrinologist specializing in diabetes, thyroid disorders, and hormonal imbalances. With a background in both conventional medicine and holistic therapies, she helps her patients achieve a balanced and healthy life. Dr. Khan is also committed to creating awareness about diabetes and its prevention, providing outreach programs to underserved communities."
+  },
+  {
+    "name": "Dr. David Fernandes",
+    "specialization": "Neurologist",
+    "availability": [
+      {
+        "day": "Tuesday",
+        "timeSlot": {
+          "startTime": "08:00 AM",
+          "endTime": "11:00 AM"
+        }
+      },
+      {
+        "day": "Thursday",
+        "timeSlot": {
+          "startTime": "01:00 PM",
+          "endTime": "04:00 PM"
+        }
+      }
+    ],
+    "fee": 950,
+    "createdAt": "2024-12-25T00:00:00.000Z",
+    "description": "Dr. David Fernandes is a leading Neurologist, specializing in brain disorders, including epilepsy, stroke, and multiple sclerosis. He offers a multidisciplinary approach to neurological care, combining the latest medical techniques with a holistic focus on brain health. Dr. Fernandes is a passionate advocate for mental health awareness and provides regular community talks and screenings."
   }
 ]

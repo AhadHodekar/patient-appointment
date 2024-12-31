@@ -85,7 +85,7 @@ const Appointment = () => {
             </div>
             {discountApplied && (
               <div className="flex justify-between">
-                <span>Discount Applied ({discountPercent}%):</span>
+                <span>Discount Applied ({discountPercent}):</span>
                 <span>-₹{(fee * discountPercent) / 100}</span>
               </div>
             )}

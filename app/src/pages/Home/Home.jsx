@@ -1,7 +1,9 @@
 import Section from "../../components/Section.jsx";
+import Button from "../../components/Button.jsx";
 import { selectAuth } from "../../store/features/authSlice.js";
 import { firstConsolationDiscount } from "../../utils/constants.js";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 const Home = () => {
   const { name } = useSelector(selectAuth);
   return (
@@ -19,9 +21,13 @@ const Home = () => {
           Now get {firstConsolationDiscount}% discount on your first
           appointment!
         </h3>
-        <button className=" rounded-md bg-accent font-semibold p-[5px] text-primary w-[120px]">
-          Book Appointment
-        </button>
+        <div>
+          <Link to={"/doctors"}>
+            <Button buttonClass="bg-accent text-primary ">
+              Book Appointment
+            </Button>
+          </Link>
+        </div>
       </div>
     </Section>
   );

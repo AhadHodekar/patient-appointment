@@ -7,6 +7,7 @@ import Appointments from "./pages/Appointments/Appointments.jsx";
 import "./App.css";
 import PrivateRoute from "./components/PrivateRoute.jsx";
 import Doctors from "./pages/Doctor/Doctors.jsx";
+import Doctor from "./pages/Doctor/Doctor.jsx";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path={"/"} element={<Home />} />
           <Route path={"/login"} element={<Login />} />
           <Route path={"/doctors"} element={<Doctors />} />
+          <Route path={"/doctor/:doctorId"} element={<Doctor />} />
           <Route path={"/appointments"} element={<PrivateRoute />}>
             <Route path={"/appointments"} element={<Appointments />} />
           </Route>

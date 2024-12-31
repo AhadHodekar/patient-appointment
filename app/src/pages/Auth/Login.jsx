@@ -37,7 +37,7 @@ const Login = () => {
     if (isSuccess) {
       console.log("login in successfull");
       dispatch(setUser({ name: data.user.name, token: data.token }));
-      navigate("/appointments");
+      navigate("/");
     }
   }, [isSuccess]);
 

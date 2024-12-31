@@ -1,9 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { baseAPIUrl } from "../../utils/constants.js";
-
-const getBearerToken = () => {
-  return localStorage.getItem("accessToken") || "";
-};
+import { getBearerToken } from "../../utils/auth.js";
 
 export const doctorApi = createApi({
   reducerPath: "doctorApi",
@@ -21,7 +18,10 @@ export const doctorApi = createApi({
     getDoctors: builder.query({
       query: () => "doctors",
     }),
+    getDoctor: builder.query({
+      query: (doctorId) => `doctors/${doctorId}`,
+    }),
   }),
 });
 
-export const { useGetDoctorsQuery } = doctorApi;
+export const { useGetDoctorsQuery, useGetDoctorQuery } = doctorApi;

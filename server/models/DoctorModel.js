@@ -28,15 +28,15 @@ const doctorSchema = new mongoose.Schema({
           "Sunday",
         ],
         required: true,
-        timeSlot: {
-          startTime: {
-            type: String,
-            required: true,
-          },
-          endTime: {
-            type: String,
-            required: true,
-          },
+      },
+      timeSlot: {
+        startTime: {
+          type: String,
+          required: true,
+        },
+        endTime: {
+          type: String,
+          required: true,
         },
       },
     },
@@ -44,6 +44,10 @@ const doctorSchema = new mongoose.Schema({
   fee: {
     type: Number,
     required: true,
+  },
+  wallet: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Wallet",
   },
   createdAt: {
     type: Date,
@@ -58,8 +62,8 @@ doctorSchema.methods.createWallet = async function () {
       doctorId: this._id,
       balance: 0,
     });
-
     await wallet.save();
+    this.wallet = wallet._id;
     console.log(`Wallet is created for doctor: ${this.name}`);
   }
 };

@@ -21,6 +21,10 @@ const patientSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  wallet: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Wallet",
+  },
   appointmentHistory: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -52,8 +56,8 @@ patientSchema.methods.createWallet = async function () {
       patientId: this._id,
       balance: 600,
     });
-
     await wallet.save();
+    this.wallet = wallet._id;
     console.log(`Wallet is created for doctor: ${this.name}`);
   }
 };
@@ -65,10 +69,6 @@ patientSchema.pre("save", async function (next) {
   }
   next();
 });
-
-patientSchema.methods.getId = function () {
-  return (this._id = id);
-};
 
 patientSchema.methods.createJWT = function () {
   return jwt.sign(

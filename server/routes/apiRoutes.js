@@ -11,7 +11,7 @@ const router = express.Router();
 router.use("/auth", authRoutes);
 router.use("/appointments", authToken, appointmentRoutes);
 router.use("/patients", authToken, patientRoutes);
-router.use("/doctors", authToken, doctorRoutes);
+router.use("/doctors", doctorRoutes);
 router.use("/reports", authToken, reportRoutes);
 
 export default router;

@@ -12,6 +12,19 @@ export const authApi = createApi({
         body: credentials,
       }),
     }),
+    adminLogin: builder.mutation({
+      query: (credentials) => ({
+        url: "/auth/admin-login",
+        method: "POST",
+        body: credentials,
+      }),
+      transformResponse: (response) => {
+        return {
+          ...response,
+          isAdmin: true,
+        };
+      },
+    }),
     logout: builder.mutation({
       query: () => ({
         url: "auth/logout",
@@ -21,4 +34,5 @@ export const authApi = createApi({
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation } = authApi;
+export const { useAdminLoginMutation, useLoginMutation, useLogoutMutation } =
+  authApi;

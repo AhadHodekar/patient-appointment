@@ -10,7 +10,10 @@ import Button from "../../components/Button";
 import { firstConsolationDiscount } from "../../utils/constants";
 import { discountCalculator } from "../../utils/discountCalculator";
 import AppointmentModal from "./components/AppointmentModal";
-import { useCreateAppointmentMutation } from "../../store/services/appointmentApi";
+import {
+  useCreateAppointmentMutation,
+  useGetAppointmentsQuery,
+} from "../../store/services/appointmentApi";
 import { useGetPatientQuery } from "../../store/services/patientApi";
 import { decodeToken } from "../../utils/auth";
 import {
@@ -25,19 +28,28 @@ const Doctor = () => {
   const { loggedIn } = useSelector(selectAuth);
   const { doctorId } = useParams();
 
-  const { token } = useSelector(selectAuth);
+  const { isAdmin, token } = useSelector(selectAuth);
   const decodedToken = decodeToken(token);
   const userId = decodedToken ? decodedToken.userId : null;
 
   const { data: doctor, isLoading } = useGetDoctorQuery(doctorId);
 
   const { data: patient, refetch: refetchPatient } = useGetPatientQuery(userId);
+  const { data: appointments, refetch: refetchAppointments } =
+    useGetAppointmentsQuery();
 
   const [appoint] = useCreateAppointmentMutation();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const balance = useSelector(selectWallet);
+  const disabled = balance < doctor?.fee ? true : false;
+
+  const isApplicable = patient
+    ? !patient.usedDiscounts.some(
+        (discount) => discount.doctorId.toString() === doctorId,
+      )
+    : false;
 
   if (isLoading) return <>...loading</>;
 
@@ -49,14 +61,15 @@ const Doctor = () => {
     setIsModalOpen(false);
   };
 
-  const handleConfirmBooking = async (appointmentTime) => {
+  const handleConfirmBooking = async (appointmentSlot) => {
     try {
-      const response = await appoint({ doctorId });
+      const response = await appoint({ doctorId, appointmentSlot });
       if (response.error) {
         setError(response.error.data.msg);
         return;
       }
       refetchPatient();
+      refetchAppointments();
       if (patient) {
         dispatch(updateWalletBalance(patient.wallet.balance));
       }
@@ -68,9 +81,19 @@ const Doctor = () => {
 
   if (doctor) {
     return (
-      <div>
+      <div className="h-full">
         <WalletBar />
-        <Section sectionClass="flex flex-col gap-[15px]">
+        <Section sectionClass="absolute flex flex-col gap-[15px]">
+          {isAdmin && (
+            <Link
+              className="relative top-0 left-0"
+              to={"/admin/reports/doctors"}
+            >
+              <Button buttonClass="bg-accent text-primary">
+                {"< Doctors"}
+              </Button>
+            </Link>
+          )}
           <h1>{doctor.name}</h1>
           <h2>{doctor.specialization}</h2>
           <div className="w-[700px]">
@@ -85,7 +108,7 @@ const Doctor = () => {
               ))}
             </div>
           </div>
-          {true && (
+          {isApplicable && (
             <div className="bg-primary text-accent rounded-md p-2">
               <h3>
                 Discount Applicable:{" "}
@@ -95,33 +118,36 @@ const Doctor = () => {
               </h3>
             </div>
           )}
-          {error && (
-            <p className="text-red-900 bg-red-400 font-bold p-1  rounded-md text-start mt-2">
-              {error || "Booking failed. Please try again."}
-            </p>
-          )}
           <div className="flex items-center gap-2 ">
-            {!loggedIn ? (
-              <Link to={"/login"}>
-                <Button buttonClass="border-2 border-primary text-primary">
-                  Book Now
-                </Button>
-              </Link>
-            ) : (
-              <Button
-                buttonClass="border-2 border-primary text-primary"
-                onClick={handleOpenModal}
-                // disabled={balance < doctor.fee ? true : false}
-              >
-                Book Now
-              </Button>
-            )}
-            {true && (
+            {!isAdmin &&
+              (!loggedIn ? (
+                <Link to="/login">
+                  <Button buttonClass="border-2 border-primary text-primary">
+                    Book Now
+                  </Button>
+                </Link>
+              ) : (
+                <button
+                  className={`font-bold p-[5px] w-[120px] rounded-md  ${
+                    disabled
+                      ? "border-2 border-red-300 text-gray-500 bg-gray-200"
+                      : "text-primary border-2 border-primary"
+                  }`}
+                  onClick={handleOpenModal}
+                  disabled={disabled}
+                >
+                  {disabled ? "Insufficient Balance" : "Book Now"}
+                </button>
+              ))}
+
+            {!isAdmin && !disabled && isApplicable && (
               <span className="font-bold">
                 <span className="text-[18px]">For </span>
-                <span className="text-gray-500 line-through">{doctor.fee}</span>
+                <span className="text-gray-500 line-through">
+                  ₹{doctor.fee}
+                </span>
                 <span className="px-1 text-[20px] text-primary">
-                  {discountCalculator(firstConsolationDiscount, doctor.fee)}$
+                  ₹{discountCalculator(firstConsolationDiscount, doctor.fee)}
                 </span>
               </span>
             )}
@@ -130,8 +156,11 @@ const Doctor = () => {
         {isModalOpen && (
           <AppointmentModal
             doctor={doctor}
+            discount={firstConsolationDiscount}
+            isApplicable={isApplicable}
             onClose={handleCloseModal}
             onConfirm={handleConfirmBooking}
+            error={error}
           />
         )}
       </div>

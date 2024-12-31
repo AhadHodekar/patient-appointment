@@ -11,10 +11,13 @@ const walletSlice = createSlice({
     updateWalletBalance: (state, action) => {
       state.balance = action.payload;
     },
+    clearWalletBalance: (state) => {
+      state.balance = 0;
+    },
   },
 });
 
-export const { updateWalletBalance } = walletSlice.actions;
+export const { updateWalletBalance, clearWalletBalance } = walletSlice.actions;
 
 export const selectWallet = (state) => state.wallet.balance;
 

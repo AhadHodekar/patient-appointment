@@ -4,9 +4,6 @@ import { selectAuth } from "../store/features/authSlice";
 
 const PrivateRoute = () => {
   const { loggedIn } = useSelector(selectAuth);
-  // if (!token.checkingStatus) {
-  //   return <>Loading...</>;
-  // }
   return loggedIn ? <Outlet /> : <Navigate to={"/login"} />;
 };
 

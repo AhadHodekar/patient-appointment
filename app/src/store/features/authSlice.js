@@ -4,6 +4,7 @@ const initialState = {
   name: null,
   token: null,
   loggedIn: false,
+  isAdmin: false,
 };
 
 export const authSlice = createSlice({
@@ -11,6 +12,7 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
+      const { isAdmin } = action.payload;
       localStorage.setItem(
         "user",
         JSON.stringify({
@@ -21,12 +23,14 @@ export const authSlice = createSlice({
       state.name = action.payload.name;
       state.token = action.payload.token;
       state.loggedIn = true;
+      state.isAdmin = isAdmin || false;
     },
     clearUser: (state) => {
       localStorage.removeItem("user");
       state.name = null;
       state.token = null;
       state.loggedIn = false;
+      state.isAdmin = false;
     },
   },
 });

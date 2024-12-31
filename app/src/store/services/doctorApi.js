@@ -21,7 +21,14 @@ export const doctorApi = createApi({
     getDoctor: builder.query({
       query: (doctorId) => `doctors/${doctorId}`,
     }),
+    getDoctorReport: builder.query({
+      query: (doctorId) => `reports/doctor/${doctorId}`,
+    }),
   }),
 });
 
-export const { useGetDoctorsQuery, useGetDoctorQuery } = doctorApi;
+export const {
+  useGetDoctorsQuery,
+  useGetDoctorQuery,
+  useGetDoctorReportQuery,
+} = doctorApi;

@@ -14,11 +14,11 @@ const getAppointments = async (req, res) => {
   }
   const appointments = await AppoinmentModel.find({
     patientId: req.user.userId,
-  });
+  }).sort({ createdAt: -1 });
   if (!appointments) {
     throw new BadRequestError("No appointments scheduled");
   }
-  res.status(StatusCodes.OK).json({ appointments });
+  res.status(StatusCodes.OK).json(appointments);
 };
 
 const getAppointment = async (req, res) => {
@@ -30,18 +30,18 @@ const getAppointment = async (req, res) => {
   if (!appointment) {
     throw new BadRequestError("Appointment not found");
   }
-  res.status(StatusCodes.OK).json({ appointment });
+  res.status(StatusCodes.OK).json(appointment);
 };
 
 const createAppointment = async (req, res) => {
   const discountPercent = process.env.FIRSTAPPOINTMENTDISCOUNT || 0;
-  const { doctorId } = req.body;
+  const { doctorId, appointmentSlot } = req.body;
 
   const doctor = await DoctorModel.findById({ _id: doctorId });
   if (!doctor) {
     throw new BadRequestError("bad request");
   }
-  const { fee } = doctor;
+  const { fee, name, specialization } = doctor;
 
   const appointmentInstance = new AppointmentModel({
     doctorId,
@@ -79,6 +79,11 @@ const createAppointment = async (req, res) => {
   const appointment = await AppoinmentModel.create({
     doctorId,
     patientId: req.user.userId,
+    doctor: {
+      name,
+      specialization,
+    },
+    appointmentSlot,
     discountApplied,
     discountPercent: discountApplied ? discountPercent : 0,
     fee,
@@ -86,6 +91,28 @@ const createAppointment = async (req, res) => {
     amountPaid: totalFee,
     appointmentDate: Date.now(),
   });
+
+  const patient = await PatientModel.findById(req.user.userId);
+  if (!patient) {
+    throw new BadRequestError("Patient not found");
+  }
+
+  patient.appointmentHistory.push(appointment._id);
+
+  if (discountApplied) {
+    const existingDiscount = patient.usedDiscounts.find(
+      (discount) => discount.doctorId.toString() === doctorId.toString(),
+    );
+    if (!existingDiscount) {
+      patient.usedDiscounts.push({
+        doctorId,
+        discountPercent,
+        discountAmount: totalFee,
+      });
+    }
+  }
+
+  await patient.save();
 
   res
     .status(StatusCodes.CREATED)

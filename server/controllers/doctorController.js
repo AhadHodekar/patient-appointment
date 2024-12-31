@@ -26,26 +26,40 @@ const getDoctorFinancialReport = async (req, res) => {
   }
 
   const appointments = await AppointmentModel.aggregate([
-    { $match: { doctorId: doctorIdObjectId, status: { $ne: "Cancelled" } } },
+    {
+      $match: {
+        doctorId: doctorIdObjectId,
+        status: { $ne: "Cancelled" }, // Exclude cancelled appointments
+      },
+    },
     {
       $group: {
         _id: "$doctorId",
         totalAppointments: { $sum: 1 },
         totalFees: { $sum: "$fee" },
-        totalDiscounts: { $sum: "$discountPercent" },
         totalAmountPaid: { $sum: "$amountPaid" },
         totalDiscountAmount: {
-          $sum: { $multiply: ["$fee", { $divide: ["$discountPercent", 100] }] },
+          $sum: {
+            $multiply: ["$fee", { $divide: ["$discountPercent", 100] }],
+          },
         },
         netIncome: { $sum: "$amountPaid" },
+        totalDiscounts: {
+          $sum: {
+            $cond: [{ $gt: ["$discountPercent", 0] }, 1, 0],
+          },
+        },
+        averageDiscountPercent: {
+          $avg: "$discountPercent",
+        },
       },
     },
   ]);
 
   if (appointments.length === 0) {
-    return res
-      .status(StatusCodes.OK)
-      .json({ msg: "No appointments found for the doctor" });
+    return res.status(StatusCodes.OK).json({
+      msg: "No appointments found for the doctor",
+    });
   }
 
   const report = appointments[0];
@@ -54,11 +68,18 @@ const getDoctorFinancialReport = async (req, res) => {
 
   res.status(StatusCodes.OK).json({
     doctor,
-    report,
-    walletBalance: wallet ? wallet.balance : 0,
+    report: {
+      totalAppointments: report.totalAppointments,
+      totalFees: report.totalFees,
+      totalAmountPaid: report.totalAmountPaid,
+      totalDiscountAmount: report.totalDiscountAmount,
+      netIncome: report.netIncome,
+      totalDiscounts: report.totalDiscounts, // Number of discounts applied
+      averageDiscountPercent: report.averageDiscountPercent.toFixed(2), // Average discount percentage
+    },
+    walletBalance: wallet ? wallet.balance : 0, // Wallet balance if exists
   });
 };
-
 // const createDoctor = async (req, res) => {
 //   const {} = req.body;
 //   res.status(StatusCodes.CREATED).json({ msg: "create doctor" });

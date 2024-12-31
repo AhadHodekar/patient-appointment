@@ -37,6 +37,10 @@ const patientSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Doctor", // References the Doctor model
       },
+      discountPercent: {
+        type: Number,
+        default: 0,
+      },
       discountAmount: {
         type: Number,
         default: 0,
@@ -54,7 +58,7 @@ patientSchema.methods.createWallet = async function () {
   if (!existingWallet) {
     const wallet = new WalletModel({
       patientId: this._id,
-      balance: 600,
+      balance: 2500,
     });
     await wallet.save();
     this.wallet = wallet._id;

@@ -11,7 +11,11 @@ const appointmentSchema = new mongoose.Schema({
     ref: "Doctor",
     required: true,
   },
-  appointmentDate: {
+  doctor: {
+    name: { type: String, required: true },
+    specialization: { type: String, required: true },
+  },
+  appointmentSlot: {
     type: Date,
     required: true,
   },

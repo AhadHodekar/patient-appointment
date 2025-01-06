@@ -7,6 +7,9 @@ import AppointmentModel from "../models/AppointmentModel.js";
 import WalletModel from "../models/WalletModel.js";
 import PatientModel from "../models/PatientModel.js";
 
+// @desc      Get all appointments
+// @route     GET /api/appointments
+// @access    Private
 const getAppointments = async (req, res) => {
   const patient = await PatientModel.findById({ _id: req.user.userId });
   if (!patient) {
@@ -21,6 +24,9 @@ const getAppointments = async (req, res) => {
   res.status(StatusCodes.OK).json(appointments);
 };
 
+// @desc      Get single appointment
+// @route     GET /api/appointments/:id
+// @access    Private
 const getAppointment = async (req, res) => {
   const patient = await PatientModel.findById({ _id: req.user.userId });
   if (!patient) {
@@ -33,6 +39,9 @@ const getAppointment = async (req, res) => {
   res.status(StatusCodes.OK).json(appointment);
 };
 
+// @desc      Create single appointment
+// @route     POST /api/appointments
+// @access    Private
 const createAppointment = async (req, res) => {
   const discountPercent = process.env.FIRSTAPPOINTMENTDISCOUNT || 0;
   const { doctorId, appointmentSlot } = req.body;
@@ -119,10 +128,16 @@ const createAppointment = async (req, res) => {
     .json({ msg: "appointment created", appointment });
 };
 
+// @desc      Update single appointment
+// @route     PUT /api/appointments/:id
+// @access    Private
 const updateAppointment = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "update appointment" });
 };
 
+// @desc      Delete single appointment
+// @route     DELETE /api/appointments/:id
+// @access    Private
 const deleteAppointment = async (req, res) => {
   res.status(StatusCodes.OK).send();
 };

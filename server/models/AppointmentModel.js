@@ -4,12 +4,12 @@ const appointmentSchema = new mongoose.Schema({
   patientId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Patient",
-    required: true,
+    required: [true, "Please provide patient ID"],
   },
   doctorId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Doctor",
-    required: true,
+    required: [true, "Please provide doctor ID"],
   },
   doctor: {
     name: { type: String, required: true },
@@ -17,7 +17,7 @@ const appointmentSchema = new mongoose.Schema({
   },
   appointmentSlot: {
     type: Date,
-    required: true,
+    required: [true, "Please choose a slot"],
   },
   discountApplied: {
     type: Boolean,

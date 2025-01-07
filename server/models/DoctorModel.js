@@ -4,15 +4,15 @@ import WalletModel from "./WalletModel.js";
 const doctorSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    required: [true, "Please provide name"],
   },
   specialization: {
     type: String,
-    required: true,
+    required: [true, "Please provide specialization"],
   },
   description: {
     type: String,
-    required: true,
+    required: [true, "Please provide description"],
   },
   availability: [
     {

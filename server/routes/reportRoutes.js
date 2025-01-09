@@ -1,10 +1,14 @@
 import express from "express";
-import { getDoctorFinancialReport } from "../controllers/doctorController.js";
-import { getPatientFinancialReport } from "../controllers/patientController.js";
+import {
+  getDoctorFinancialReport,
+  getPatientFinancialReport,
+} from "../controllers/reportController.js";
+import { getAllAppointments } from "../controllers/appointmentController.js";
 
 const router = express.Router();
 
-router.get("/doctor/:doctorId", getDoctorFinancialReport);
-router.get("/patient/:patientId", getPatientFinancialReport);
+router.get("/doctor/:id", getDoctorFinancialReport);
+router.get("/patient/:id", getPatientFinancialReport);
+router.get("/appointments", getAllAppointments);
 
 export default router;

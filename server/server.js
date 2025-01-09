@@ -30,7 +30,7 @@ const start = () => {
   try {
     connectDB();
     app.listen(port, () =>
-      console.log(`server is running at port: ${port}...`),
+      console.log(`Server is running at port: ${port}...`),
     );
   } catch (error) {
     console.error(error);

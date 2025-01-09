@@ -1,6 +1,10 @@
 import { StatusCodes } from "http-status-codes";
 import PatientModel from "../models/PatientModel.js";
-import { NotFoundError, UnauthenticatedError } from "../errors/index.js";
+import {
+  BadRequestError,
+  NotFoundError,
+  UnauthenticatedError,
+} from "../errors/index.js";
 import AdminModel from "../models/AdminModel.js";
 
 // Helper function to handle registration
@@ -12,9 +16,9 @@ const handleRegister = async (
   isDoctor = false,
 ) => {
   const { name, email, password } = req.body;
-  if (!name || !email || !password) {
-    throw new BadRequestError("All fields are required");
-  }
+  // if (!name || !email || !password) {
+  //   throw new BadRequestError("All fields are required");
+  // }
   const user = await model.create({ ...req.body });
 
   const token = await user.createJWT();
@@ -39,14 +43,18 @@ const handleLogin = async (
 ) => {
   let role = isAdmin ? "Admin" : isDoctor ? "Doctor" : "Patient";
   const { email, password } = req.body;
+  if (!email || !password) {
+    throw new BadRequestError("Please provide email and password");
+  }
+
   const user = await model.findOne({ email });
   if (!user) {
-    throw new NotFoundError(`${role} doesn't exist`);
+    throw new UnauthenticatedError(`Invalid credentials`);
   }
 
   const verifyPassword = await user.comparePasswords(password);
   if (!verifyPassword) {
-    throw new UnauthenticatedError("Invalid Credentials");
+    throw new UnauthenticatedError("Invalid credentials");
   }
 
   const token = user.createJWT();

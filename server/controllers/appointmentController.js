@@ -6,8 +6,20 @@ import BadRequestError from "../errors/badRequestError.js";
 import AppointmentModel from "../models/AppointmentModel.js";
 import WalletModel from "../models/WalletModel.js";
 import PatientModel from "../models/PatientModel.js";
+import NotFoundError from "../errors/notFoundError.js";
 
 // @desc      Get all appointments
+// @route     GET /api/reports/appointments
+// @access    Private
+const getAllAppointments = async (req, res) => {
+  const appointments = await AppoinmentModel.find({}).sort({ createdAt: -1 });
+  if (!appointments) {
+    throw new NotFoundError("No appointments found");
+  }
+  res.status(StatusCodes.OK).json(appointments);
+};
+
+// @desc      Get patient's appointments
 // @route     GET /api/appointments
 // @access    Private
 const getAppointments = async (req, res) => {
@@ -15,11 +27,12 @@ const getAppointments = async (req, res) => {
   if (!patient) {
     throw new BadRequestError("No appointments scheduled");
   }
+
   const appointments = await AppoinmentModel.find({
     patientId: req.user.userId,
   }).sort({ createdAt: -1 });
   if (!appointments) {
-    throw new BadRequestError("No appointments scheduled");
+    throw new NotFoundError("No appointments scheduled");
   }
   res.status(StatusCodes.OK).json(appointments);
 };
@@ -143,6 +156,7 @@ const deleteAppointment = async (req, res) => {
 };
 
 export {
+  getAllAppointments,
   getAppointments,
   getAppointment,
   createAppointment,

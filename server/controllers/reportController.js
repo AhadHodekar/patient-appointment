@@ -1,31 +1,9 @@
-import { StatusCodes } from "http-status-codes";
-import DoctorModel from "../models/DoctorModel.js";
-import AppointmentModel from "../models/AppointmentModel.js";
-import WalletModel from "../models/WalletModel.js";
 import mongoose from "mongoose";
-import NotFoundError from "../errors/notFoundError.js";
-
-// @desc      Get all doctors
-// @route     GET /api/doctors
-// @access    Public
-const getDoctors = async (req, res) => {
-  const doctors = await DoctorModel.find({});
-  if (!doctors) {
-    throw new NotFoundError("Doctors not found");
-  }
-  res.status(StatusCodes.OK).json(doctors);
-};
-
-// @desc      Get single doctors
-// @route     GET /api/doctors/:id
-// @access    Public
-const getDoctor = async (req, res) => {
-  const doctor = await DoctorModel.findById({ _id: req.params.id });
-  if (!doctor) {
-    throw new NotFoundError("Doctor not found");
-  }
-  res.status(StatusCodes.OK).json(doctor);
-};
+import AppointmentModel from "../models/AppointmentModel.js";
+import DoctorModel from "../models/DoctorModel.js";
+import PatientModel from "../models/PatientModel.js";
+import WalletModel from "../models/WalletModel.js";
+import { StatusCodes } from "http-status-codes";
 
 // @desc      Get doctor report
 // @route     GET /api/reports/doctor/:id
@@ -40,7 +18,6 @@ const getDoctorFinancialReport = async (req, res) => {
     throw new NotFoundError("Doctor not found");
   }
 
-  // Fetch appointments for the doctor and aggregate relevant data
   const appointments = await AppointmentModel.aggregate([
     {
       $match: {
@@ -97,33 +74,51 @@ const getDoctorFinancialReport = async (req, res) => {
   });
 };
 
-// @desc      Create single doctor
-// @route     POST /api/doctors
+// @desc      Get patient's report
+// @route     GET /api/reports/patient/:id
 // @access    Private
-// const createDoctor = async (req, res) => {
-//   const {} = req.body;
-//   res.status(StatusCodes.CREATED).json({ msg: "create doctor" });
-// };
+const getPatientFinancialReport = async (req, res) => {
+  const { id: patientId } = req.params;
 
-// @desc      Update single doctor
-// @route     PUT /api/doctors/:id
-// @access    Private
-// const updateDoctor = async (req, res) => {
-//   res.status(StatusCodes.OK).json({ msg: "update doctor" });
-// };
+  const patientIdObjectId = new mongoose.Types.ObjectId(patientId);
 
-// @desc      Delete single doctor
-// @route     DELETE /api/doctors/:id
-// @access    Private
-// const deleteDoctor = async (req, res) => {
-//   res.status(StatusCodes.OK).send();
-// };
+  const patient = await PatientModel.findById(patientIdObjectId);
+  if (!patient) {
+    return res.status(StatusCodes.NOT_FOUND).json({ msg: "Patient not found" });
+  }
+  patient.password = undefined;
 
-export {
-  getDoctors,
-  getDoctor,
-  getDoctorFinancialReport,
-  // createDoctor,
-  // updateDoctor,
-  // deleteDoctor
+  // Fetch appointments for the patient and aggregate relevant data
+  const appointments = await AppointmentModel.aggregate([
+    { $match: { patientId: patientIdObjectId, status: { $ne: "Cancelled" } } },
+    {
+      $group: {
+        _id: "$patientId",
+        totalAppointments: { $sum: 1 },
+        totalFees: { $sum: "$fee" },
+        totalAmountPaid: { $sum: "$amountPaid" },
+        totalDiscounts: { $sum: "$discountPercent" },
+        totalDiscountAmount: {
+          $sum: { $multiply: ["$fee", { $divide: ["$discountPercent", 99] }] },
+        },
+      },
+    },
+  ]);
+
+  if (appointments.length === 0) {
+    return res
+      .status(StatusCodes.OK)
+      .json({ msg: "No appointments found for the patient" });
+  }
+
+  const report = appointments[0];
+
+  const wallet = await WalletModel.findOne({ patientId: patientIdObjectId });
+
+  res.status(StatusCodes.OK).json({
+    patient,
+    report,
+    walletBalance: wallet ? wallet.balance : 0,
+  });
 };
+export { getDoctorFinancialReport, getPatientFinancialReport };

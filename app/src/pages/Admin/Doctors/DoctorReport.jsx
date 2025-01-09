@@ -69,7 +69,7 @@ const DoctorReport = () => {
               </div>
               <div className="flex justify-between">
                 <span>Total Discounts:</span>
-                <span>{report.totalDiscounts}%</span>
+                <span>{report.totalDiscounts}</span>
               </div>
               <div className="flex justify-between">
                 <span>Total Amount Paid:</span>

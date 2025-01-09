@@ -1,7 +1,7 @@
 import Section from "../../components/Section";
 const About = () => {
   return (
-    <Section sectionClass="about-container h-full overflow-scroll bg-gray-50">
+    <Section sectionClass="about-container bg-gray-50">
       <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
         <header className="text-center mb-8">
           <h1 className="text-3xl font-semibold text-primary">

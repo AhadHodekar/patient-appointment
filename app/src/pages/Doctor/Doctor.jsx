@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAuth } from "../../store/features/authSlice";
 import { useGetDoctorQuery } from "../../store/services/doctorApi";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import WalletBar from "../../components/WalletBar";
 import Section from "../../components/Section";
 import BulletCard from "./components/BulletCard";
@@ -20,10 +20,12 @@ import {
   selectWallet,
   updateWalletBalance,
 } from "../../store/features/walletSlice";
+import ErrorCard from "../../components/ErrorCard";
 
 const Doctor = () => {
-  const dispatch = useDispatch();
   const [error, setError] = useState(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { loggedIn } = useSelector(selectAuth);
   const { doctorId } = useParams();
@@ -32,7 +34,11 @@ const Doctor = () => {
   const decodedToken = decodeToken(token);
   const userId = decodedToken ? decodedToken.userId : null;
 
-  const { data: doctor, isLoading } = useGetDoctorQuery(doctorId);
+  const {
+    data: doctor,
+    error: doctorError,
+    isLoading,
+  } = useGetDoctorQuery(doctorId);
 
   const { data: patient, refetch: refetchPatient } = useGetPatientQuery(userId);
   const { data: appointments, refetch: refetchAppointments } =
@@ -73,12 +79,13 @@ const Doctor = () => {
       if (patient) {
         dispatch(updateWalletBalance(patient.wallet.balance));
       }
-      console.log(`Booking confirmed`);
+      alert(`Booking confirmed`);
+      navigate("/appointments");
     } catch (error) {
       console.error("Error confirming booking:", error);
     }
   };
-
+  if (error) return <ErrorCard error={doctorError.data.msg} />;
   if (doctor) {
     return (
       <div className="h-full">

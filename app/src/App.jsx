@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 import Home from "./pages/Home/Home.jsx";
 import Login from "./pages/Auth/Login.jsx";
+import Register from "./pages/Auth/Register.jsx";
 import AdminLogin from "./pages/Auth/AdminLogin.jsx";
 import Appointments from "./pages/Appointments/Appointments.jsx";
 import PrivateRoute from "./components/PrivateRoute.jsx";
@@ -19,10 +20,11 @@ function App() {
   return (
     <div className="app absolute ">
       <Navbar />
-      <div className="mt-[60px] h-full w-full ">
+      <div className="mt-[60px] h-full w-full">
         <Routes>
           <Route path={"/"} element={<Home />} />
           <Route path={"/login"} element={<Login />} />
+          <Route path={"/register"} element={<Register />} />
           <Route path={"/admin/login"} element={<AdminLogin />} />
           <Route
             path={"/admin/reports/doctors"}
@@ -48,8 +50,8 @@ function App() {
             />
           </Route>
         </Routes>
+        <Footer />
       </div>
-      <Footer />
     </div>
   );
 }

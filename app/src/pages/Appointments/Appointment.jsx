@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { convertTo12HourFormat } from "../../utils/dateandtime";
 import Button from "../../components/Button";
 import WalletBar from "../../components/WalletBar";
+import ErrorCard from "../../components/ErrorCard";
 
 const Appointment = () => {
   const { appointmentId } = useParams();
@@ -23,11 +24,7 @@ const Appointment = () => {
   }
 
   if (error) {
-    return (
-      <Section>
-        <p>There was an error loading the appointment details.</p>
-      </Section>
-    );
+    return <ErrorCard error={error.data.msg} />;
   }
 
   // Extract the necessary fields from the appointment data

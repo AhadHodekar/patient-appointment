@@ -40,6 +40,7 @@ const AppointmentModal = ({
     if (!appointmentDate || !appointmentTime) return;
 
     const formattedDate = appointmentDate.toISOString().split("T")[0];
+    console.log(formattedDate);
 
     const formattedTime = convertTo24HourTime(appointmentTime);
     const appointmentDateTime = `${formattedDate}T${formattedTime}.000Z`;
